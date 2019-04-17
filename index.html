@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+
+	<body>
+		<style>
+			li {
+				width: 300px;
+				height: 40px;
+				text-align: center;
+				line-height: 80px;
+				background-color: #CCCCCC;
+				list-style: none;
+				line-height: 35px;
+				margin-top: 5px;
+			}
+			
+			.all {
+				border: 1px solid #CCCCCC;
+				width: 800px;
+				overflow: hidden;
+				zoom: 1;
+			}
+			
+			#out {
+				float: left;
+			}
+			
+			.ulli {
+				float: left;
+			}
+		</style>
+		</head>
+
+		<body>
+			<h1>垃圾桶</h1>
+			<div class="all">
+				<div id="out"><img src="img/trash1.png"></div>
+				<ul class="ulli">
+					<li draggable="true">《文章1》</li>
+					<li draggable="true">《文章2》</li>
+					<li draggable="true">《文章3》</li>
+
+				</ul>
+
+			</div>
+			<p id="txt">已删除文章列表</p>
+		</body>
+
+</html>
+<script>
+	window.onload = function() {
+		//获取每个要用到的元素
+		var ali = document.getElementsByTagName("li");
+		var out = document.getElementById("out");
+		var txt = document.getElementById("txt");
+		var targetLi = null;
+
+		//给每个li绑定拖拽事件
+		for(var i = 0; i < ali.length; i++) {
+			ali[i].ondragstart = function(ev) {
+				targetLi = this;
+				ev.dataTransfer.setData("text", this.innerHTML);
+
+			}
+			//清空
+			ali[i].ondragend = function() {
+				this.style.background = ""
+			}
+		}
+
+		//阻止禁止投放的默认事件 重点
+		out.ondragover = function(ev) {
+			ev.preventDefault()
+		}
+
+		//投放事件
+		out.ondrop = function(ev) {
+			var oText = ev.dataTransfer.getData("text");
+			txt.innerHTML = "删除的是:</br></br>" + oText;
+			//targetLi=this,当前li的父级ul的孩子，找到当前li，删除
+			targetLi.parentNode.removeChild(targetLi);
+		}
+	}
+</script>
+
+</body>
+
+</html>
